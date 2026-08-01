@@ -38,7 +38,7 @@ export function GalleryPage() {
           <button onClick={() => setOpen(null)} className="text-slate-400">← 返回</button>
           <button onClick={() => remix(open)} className="rounded-lg bg-emerald-600 px-3 py-1 text-sm">Remix</button>
         </div>
-        <iframe title="preview" sandbox="allow-scripts" srcDoc={open.html} className="flex-1 w-full bg-white rounded-lg" />
+        <iframe title="preview" sandbox="allow-scripts allow-modals" srcDoc={open.html} className="flex-1 w-full bg-white rounded-lg" />
       </div>
     )
   }

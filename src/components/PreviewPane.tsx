@@ -3,7 +3,7 @@ export function PreviewPane({ html }: { html: string }) {
   return (
     <iframe
       title="preview"
-      sandbox="allow-scripts"
+      sandbox="allow-scripts allow-modals"
       srcDoc={html}
       className="flex-1 w-full bg-white rounded-lg border border-slate-800"
     />

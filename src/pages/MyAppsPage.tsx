@@ -30,7 +30,7 @@ export function MyAppsPage() {
     return (
       <div className="p-4 flex flex-col h-[calc(100vh-64px)] gap-2">
         <button onClick={() => setOpen(null)} className="text-slate-400 self-start">← 返回</button>
-        <iframe title="preview" sandbox="allow-scripts" srcDoc={open.html} className="flex-1 w-full bg-white rounded-lg" />
+        <iframe title="preview" sandbox="allow-scripts allow-modals" srcDoc={open.html} className="flex-1 w-full bg-white rounded-lg" />
       </div>
     )
   }
