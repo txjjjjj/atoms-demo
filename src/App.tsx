@@ -1,5 +1,6 @@
 import { HashRouter, Routes, Route, Link, NavLink } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
+import { WorkspacePage } from './pages/WorkspacePage'
 
 export default function App() {
   const { user, loading, signInAnon } = useAuth()
@@ -37,7 +38,7 @@ export default function App() {
           <Link to="/settings" className="ml-auto text-slate-400">设置</Link>
         </nav>
         <Routes>
-          <Route path="/" element={<div className="p-8">Workspace (Task 7)</div>} />
+          <Route path="/" element={<WorkspacePage />} />
           <Route path="/my-apps" element={<div className="p-8">My Apps (Task 9)</div>} />
           <Route path="/gallery" element={<div className="p-8">Gallery (Task 10)</div>} />
           <Route path="/settings" element={<div className="p-8">Settings (Task 11)</div>} />
