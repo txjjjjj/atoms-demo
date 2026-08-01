@@ -51,6 +51,18 @@
 
 ## 项目数据流
 
+**精简版**（关键组件）：
+
+```mermaid
+flowchart LR
+    U([用户]) --> APP[Atoms-Demo 前端<br/>GitHub Pages 托管]
+    APP -->|LLM 请求| CF[Cloudflare Worker<br/>CORS 代理转发]
+    CF --> BM[(BigModel<br/>glm-5.2)]
+    APP -->|读写应用数据| SB[(Supabase<br/>Postgres + Auth + RLS)]
+```
+
+**详细版**（含三步智能体工作流与交互细节）：
+
 ```mermaid
 flowchart TD
     U([用户]) --> WP[工作台 WorkspacePage]
