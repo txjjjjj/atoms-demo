@@ -27,6 +27,15 @@ dist-ssr
 .venv
 __pycache__/
 *.py[cod]
+.python-version
+main.py
+
+# Misc local / not part of this project
+test.js
+.agents/
+.claude/
+skills-lock.json
+【请创建副本后使用】ROOT*.md
 
 # TypeScript build info
 *.tsbuildinfo
