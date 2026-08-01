@@ -15,8 +15,7 @@ export function useAuth() {
         setUser(data.session.user)
         setProfile(await getProfile(data.session.user.id))
       }
-      setLoading(false)
-    })
+    }).finally(() => setLoading(false))
     const { data: sub } = supabase.auth.onAuthStateChange(async (_e, session) => {
       setUser(session?.user ?? null)
       if (session?.user) setProfile(await getProfile(session.user.id))
