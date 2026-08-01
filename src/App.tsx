@@ -3,6 +3,7 @@ import { HashRouter, Routes, Route, Link, NavLink } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
 import { WorkspacePage } from './pages/WorkspacePage'
 import { MyAppsPage } from './pages/MyAppsPage'
+import { GalleryPage } from './pages/GalleryPage'
 
 const AuthContext = createContext<ReturnType<typeof useAuth> | null>(null)
 
@@ -51,7 +52,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<WorkspacePage />} />
             <Route path="/my-apps" element={<MyAppsPage />} />
-            <Route path="/gallery" element={<div className="p-8">Gallery (Task 10)</div>} />
+            <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/settings" element={<div className="p-8">Settings (Task 11)</div>} />
           </Routes>
         </div>
