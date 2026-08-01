@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
-import { getLlmToken } from './storage'
+import { getLlmToken, getLlmBaseUrl } from './storage'
 
 export const LlmConfig = {
   baseURL: 'https://open.bigmodel.cn/api/anthropic',
@@ -12,8 +12,10 @@ export function createLlmClient(): Anthropic {
   if (!authToken) {
     throw new Error('未配置 LLM Token，请在设置中填入。')
   }
+  // Use the user-configured proxy/endpoint if set, else BigModel direct.
+  const baseURL = getLlmBaseUrl() || LlmConfig.baseURL
   return new Anthropic({
-    baseURL: LlmConfig.baseURL,
+    baseURL,
     authToken,
     dangerouslyAllowBrowser: true,
   })

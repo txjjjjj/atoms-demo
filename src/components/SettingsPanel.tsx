@@ -1,12 +1,24 @@
 import { useState } from 'react'
-import { getLlmToken, setLlmToken, clearLlmToken } from '../lib/storage'
+import {
+  getLlmToken,
+  setLlmToken,
+  clearLlmToken,
+  getLlmBaseUrl,
+  setLlmBaseUrl,
+} from '../lib/storage'
 import { useAuthCtx } from '../App'
 
 export function SettingsPanel() {
   const { profile, setDisplayName } = useAuthCtx()
   const [token, setToken] = useState(getLlmToken() ?? '')
+  const [baseUrl, setBaseUrl] = useState(getLlmBaseUrl() ?? '')
   const [name, setName] = useState(profile?.display_name ?? '')
   const [saved, setSaved] = useState(false)
+
+  const flashSaved = () => {
+    setSaved(true)
+    setTimeout(() => setSaved(false), 1500)
+  }
 
   return (
     <div className="p-4 max-w-md space-y-6">
@@ -23,8 +35,7 @@ export function SettingsPanel() {
           <button
             onClick={() => {
               setLlmToken(token)
-              setSaved(true)
-              setTimeout(() => setSaved(false), 1500)
+              flashSaved()
             }}
             className="rounded-lg bg-emerald-600 px-4 py-2"
           >
@@ -43,6 +54,39 @@ export function SettingsPanel() {
         </div>
         <p className="text-xs text-slate-500 mt-2">
           Token 仅存在你的浏览器 localStorage。前往 open.bigmodel.cn 获取。
+        </p>
+      </div>
+      <div>
+        <h2 className="font-semibold mb-2">API 代理地址（可选）</h2>
+        <input
+          value={baseUrl}
+          onChange={(e) => setBaseUrl(e.target.value)}
+          placeholder="https://atoms-proxy.xxx.workers.dev（留空则直连 BigModel）"
+          className="w-full rounded-lg bg-slate-900 border border-slate-700 px-3 py-2"
+        />
+        <div className="flex gap-2 mt-2">
+          <button
+            onClick={() => {
+              setLlmBaseUrl(baseUrl.trim())
+              flashSaved()
+            }}
+            className="rounded-lg bg-emerald-600 px-4 py-2"
+          >
+            保存
+          </button>
+          <button
+            onClick={() => {
+              setBaseUrl('')
+              setLlmBaseUrl('')
+            }}
+            className="rounded-lg bg-slate-700 px-4 py-2"
+          >
+            清除
+          </button>
+        </div>
+        <p className="text-xs text-slate-500 mt-2">
+          若浏览器直连 BigModel 遇到 CORS 报错，部署一个 Cloudflare Worker 代理（见
+          <code className="mx-1">worker/README.md</code>）并把其 URL 填在这里。
         </p>
       </div>
       <div>
