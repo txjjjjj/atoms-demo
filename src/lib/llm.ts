@@ -2,7 +2,10 @@ import Anthropic from '@anthropic-ai/sdk'
 import { getLlmToken, getLlmBaseUrl } from './storage'
 
 export const LlmConfig = {
-  baseURL: 'https://open.bigmodel.cn/api/anthropic',
+  // Default to the Cloudflare Worker CORS proxy (BigModel's edge returns a
+  // malformed double Access-Control-Allow-Origin header for browser calls).
+  // Users can override with a direct BigModel URL in Settings if they prefer.
+  baseURL: 'https://atoms-proxy.781647046.workers.dev',
   model: 'glm-5.2',
   maxTokens: 8000,
 }
