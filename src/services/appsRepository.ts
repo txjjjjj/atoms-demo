@@ -33,13 +33,18 @@ export async function updateApp(id: string, patch: Partial<AppRecord>): Promise<
   if (error) throw error
 }
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
 export async function forkApp(source: AppRecord, uid: string): Promise<AppRecord> {
+  // Only real DB records have a uuid id we can reference via forked_from.
+  // Demo apps (e.g. id "demo-timer") are not in the table, so FK would fail;
+  // set forked_from to null for them.
   return insertApp({
     owner_id: uid,
     title: `${source.title} (Remix)`,
     prompt: source.prompt,
     html: source.html,
     is_public: false,
-    forked_from: source.id,
+    forked_from: UUID_RE.test(source.id) ? source.id : null,
   })
 }
