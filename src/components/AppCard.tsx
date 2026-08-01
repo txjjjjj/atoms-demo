@@ -15,7 +15,9 @@ export function AppCard({ app, onOpen, onTogglePublic }: {
           </button>
         )}
       </div>
-      <div className="text-xs text-slate-500 mt-1">{new Date(app.created_at).toLocaleString()}</div>
+      <div className="text-xs text-slate-500 mt-1">
+        {app.created_at ? new Date(app.created_at).toLocaleString() : '示例应用'}
+      </div>
     </div>
   )
 }
