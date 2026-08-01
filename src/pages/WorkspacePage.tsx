@@ -6,7 +6,7 @@ import { AgentWorkflow } from '../components/AgentWorkflow'
 import { PreviewPane } from '../components/PreviewPane'
 import { ChatIterate } from '../components/ChatIterate'
 import { getLlmToken } from '../lib/storage'
-import { insertApp } from '../services/appsRepository'
+import { insertApp, updateApp } from '../services/appsRepository'
 import { useAuthCtx } from '../App'
 
 type Status = 'idle' | 'running' | 'done' | 'error'
@@ -40,7 +40,7 @@ export function WorkspacePage() {
 
   async function handleGenerate(prompt: string) {
     if (!getLlmToken()) { setError('请先在设置中填入 LLM Token'); setStatus('error'); return }
-    setStatus('running'); setError(''); setLastPrompt(prompt)
+    setStatus('running'); setError(''); setLastPrompt(prompt); setSavedAppId(null)
     setTexts({ plan: '', code: '', review: '' }); setHtml('')
     try {
       const res: AgentResult = await runAgent(prompt, {
@@ -49,11 +49,17 @@ export function WorkspacePage() {
           setTexts(prev => ({ ...prev, [e.step]: prev[e.step] + e.delta }))
         },
       })
+      if (!res.html) {
+        setError('未能从模型输出提取到可运行的 HTML，请重试或调整需求')
+        setStatus('error')
+        setActive(null)
+        return
+      }
       setHtml(res.html)
       setActive(null)
       setStatus('done')
     } catch (e: any) {
-      setError(e.message ?? String(e)); setStatus('error')
+      setError(e.message ?? String(e)); setStatus('error'); setActive(null)
     }
   }
 
@@ -65,7 +71,19 @@ export function WorkspacePage() {
       const newHtml = await iterate(html, instruction, {
         onEvent: e => setTexts(prev => ({ ...prev, [e.step]: prev[e.step] + e.delta })),
       })
+      if (!newHtml) {
+        setError('未能从模型输出提取到可运行的 HTML，请重试或调整需求')
+        setStatus('error'); setActive(null)
+        return
+      }
       setHtml(newHtml); setActive(null); setStatus('done')
+      if (savedAppId) {
+        try {
+          await updateApp(savedAppId, { html: newHtml })
+        } catch (e: any) {
+          setError(e.message ?? String(e))
+        }
+      }
     } catch (e: any) { setError(e.message ?? String(e)); setStatus('error'); setActive(null) }
   }
 

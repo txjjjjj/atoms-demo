@@ -15,7 +15,10 @@ export async function listPublic(): Promise<AppRecord[]> {
 
 export async function getApp(id: string): Promise<AppRecord | null> {
   const { data, error } = await supabase.from('apps').select('*').eq('id', id).single()
-  if (error) throw error
+  if (error) {
+    if (error.code === 'PGRST116') return null
+    throw error
+  }
   return data as AppRecord
 }
 
