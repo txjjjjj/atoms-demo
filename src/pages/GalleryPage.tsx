@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { listPublic, forkApp } from '../services/appsRepository'
 import { AppCard } from '../components/AppCard'
 import { useAuthCtx } from '../App'
+import { DEMO_APPS } from '../lib/demoApps'
 import type { AppRecord } from '../types'
 
 export function GalleryPage() {
@@ -12,12 +13,12 @@ export function GalleryPage() {
   useEffect(() => {
     let cancelled = false
     listPublic()
-      .then((list) => {
-        if (!cancelled) setApps(list)
+      .then((rows) => {
+        if (!cancelled) setApps(rows.length ? rows : DEMO_APPS)
       })
       .catch((err) => {
         console.error('Failed to load public apps:', err)
-        if (!cancelled) setApps([])
+        if (!cancelled) setApps(DEMO_APPS)
       })
     return () => {
       cancelled = true

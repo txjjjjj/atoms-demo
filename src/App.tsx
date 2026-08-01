@@ -4,6 +4,7 @@ import { useAuth } from './hooks/useAuth'
 import { WorkspacePage } from './pages/WorkspacePage'
 import { MyAppsPage } from './pages/MyAppsPage'
 import { GalleryPage } from './pages/GalleryPage'
+import { SettingsPanel } from './components/SettingsPanel'
 
 const AuthContext = createContext<ReturnType<typeof useAuth> | null>(null)
 
@@ -53,7 +54,7 @@ export default function App() {
             <Route path="/" element={<WorkspacePage />} />
             <Route path="/my-apps" element={<MyAppsPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
-            <Route path="/settings" element={<div className="p-8">Settings (Task 11)</div>} />
+            <Route path="/settings" element={<SettingsPanel />} />
           </Routes>
         </div>
       </HashRouter>
